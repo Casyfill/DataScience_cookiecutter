@@ -1,4 +1,4 @@
-.PHONY: clean data lint requirements sync_data_to_s3 sync_data_from_s3
+.PHONY: requirements environment clean test timetest archive
 
 #################################################################################
 # GLOBALS                                                                       #
@@ -6,22 +6,20 @@
 
 PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 PROJECT_NAME = {{ cookiecutter.repo_name }}
+USER := $(whoami)
 
 #################################################################################
 # COMMANDS                                                                      #
 #################################################################################
 
-## Install Python Dependencies
+## DUMP Python Dependencies [not real requirements, though]
 requirements:
 	conda env export > environment.yml
 
 ## Set up python interpreter environment
 environment:
-	conda create -f environment.yml
+	conda env create -f environment.yml
 	@echo ">>> New conda env created. Activate with:\nsource activate $(PROJECT_NAME)"
-
-environment:
-	conda env create environment.yml
 
 ## Delete all compiled Python files
 clean:
@@ -34,3 +32,9 @@ test:
 ## Test with timer
 timetest:
 	python -m nose --with-timer --timer-top-n 10
+
+# copy project to SE googledrive
+archive:
+	ARCHIVAL_PATH = "/Users/$(USER)/Google Drive File Stream/My Drive/StreetEasy Research Files/02 - Research Projects/{% now 'local', '%Y' %}_$(PROJECT_DIR)"
+	cp "../$(PROJECT_DIR) $(ARCHIVAL_PATH)"
+	@echo ">>> Project was copied to:\n $(ARCHIVAL_PATH)"

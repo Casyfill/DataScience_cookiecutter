@@ -1,9 +1,7 @@
 {
 	"project_name": "New project",
-	"repo_name": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
-	"author_name": "Your name (or your organization/company/team)",
+	"full_name": "Philipp Kats",
     "description": "A short description of the project.",
-	"month": "{% now 'local', '%m' %}",
 	"N": "N"
 
 }
